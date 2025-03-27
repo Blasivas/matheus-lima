@@ -1,3 +1,4 @@
+<?php
 /**
  * @package Devops_challenge_Junior
  * @version 1.0
@@ -10,12 +11,8 @@ Author: Apiki WordPress
 Version: 1.0
 */
 
-$global_lyrics;
-
-function apiki_segura_o_tchan() {
-	$lyrics = $global_lyrics;
-	
-	$lyrics = "Pau que nasce torto nunca se endireita
+$global_lyrics = <<<'LYRICS'
+	Pau que nasce torto nunca se endireita
 	Menina que requebra a mãe pega na cabeça
 	Pau que nasce torto nunca se endireita
 	Menina que requebra a mãe pega na cabeça
@@ -28,38 +25,46 @@ function apiki_segura_o_tchan() {
 	Pau que nasce torto nunca se endireita
 	Menina que requebra a mãe pega na cabeça
 	Segure o tchan
-	Amare o tchan
+	Amarre o tchan
 	Segure o tchan tchan tchan tchan
 	Depois de nove meses você vê o resultado
 	Esse é o Gera Samba arrebentando no pedaço
-	Joga ela no meio, mete em cima, mete embaixo";
+	Joga ela no meio, mete em cima, mete embaixo
+	LYRICS;
 
-	$lyrics = explode( "\n", $lyrics )
 
-	return wptexturize( $lyrics[ mt_rand( count( $lyrics ) - 1, 0 ) ] );
+function apiki_segura_o_tchan() {
+	global $global_lyrics;
+	$lyrics = $global_lyrics;
+
+	$lyrics = explode( "\n", $lyrics );
+
+	return wptexturize( $lyrics[ mt_rand( 0, count( $lyrics ) - 1 ) ] );
 }
 
 function devops_challenge() {
-	$chosen = $undefined_variable;
 	$lang   = '';
 	if ( 'en_' !== substr( get_user_locale(), 0, 3 ) ) {
 		$lang = ' lang="en"';
 	}
 
-	printf(
-		'O texto é: %s %s %s',
-		__( 'Segure o Tchan, by Apiki WordPress:' ),
-		$lang
-	);
+	echo '<div id="devop">';
+		printf(
+			'%s %s %s',
+			__('Segure o Tchan, by Apiki WordPress:'),
+			apiki_segura_o_tchan(),
+			$lang
+		);
+	echo '</div>';
 }
 
-add_action( '', 'devops_challenge' );
+add_action( 'admin_notices', 'devops_challenge' );
 
 function devop_css() {
 	echo "
-	<style type='text/css'>
+	<style>
 	#devop {
-		float: right;
+		float: left !important;
 		padding: 5px 10px;
 		margin: 0;
 		font-size: 12px;
